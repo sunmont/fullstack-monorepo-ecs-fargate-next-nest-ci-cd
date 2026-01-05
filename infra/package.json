@@ -1,0 +1,31 @@
+{
+  "name": "infra",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "synth": "cdk synth",
+    "bootstrap": "cdk bootstrap",
+    "deploy": "cdk deploy --all --require-approval never",
+    "deploy:backend": "cdk deploy BackendStack",
+    "deploy:frontend": "cdk deploy FrontendStack",
+    "deploy:pipeline": "cdk deploy PipelineStack",
+    "destroy": "cdk destroy --all",
+    "diff": "cdk diff",
+    "localstack:start": "docker-compose up -d localstack",
+    "localstack:init": "cdklocal bootstrap && cdklocal deploy --all",
+    "localstack:destroy": "cdklocal destroy --all"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "aws-cdk": "^2.0.0",
+    "aws-cdk-local": "^2.0.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.0.0",
+    "constructs": "^10.0.0",
+    "dotenv": "^16.0.0"
+  }
+}
