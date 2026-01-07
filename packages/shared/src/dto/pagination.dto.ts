@@ -1,18 +1,16 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsInt, Min, Max, IsString, IsIn } from 'class-validator';
+import { IsOptional, IsInt, Min, Max, IsString, IsIn, IsArray } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class PaginationDto {
     @ApiProperty({ required: false, default: 1, minimum: 1 })
     @IsOptional()
-    @Type(() => Number)
     @IsInt()
     @Min(1)
     page?: number = 1;
 
     @ApiProperty({ required: false, default: 10, minimum: 1, maximum: 100 })
     @IsOptional()
-    @Type(() => Number)
     @IsInt()
     @Min(1)
     @Max(100)
@@ -34,6 +32,31 @@ export class PaginationDto {
     @IsString()
     search?: string;
 
+    @IsOptional()
+    @IsString()
+    status?: string;
+
+    @IsOptional()
+    @IsString()
+    author?: string;
+
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true }) // Ensures every item in the array is a string
+    tags?: string[];
+
+    @IsOptional()
+    @IsString()
+    category?: string;
+
+    @IsOptional()
+    @IsString()
+    includeDrafts?: string;
+
+    @IsOptional()
+    @IsString()
+    publishedAt?: string;
+
     constructor(partial?: Partial<PaginationDto>) {
         if (partial) {
             Object.assign(this, partial);
@@ -41,6 +64,8 @@ export class PaginationDto {
     }
 
     get skip(): number {
-        return (this.page - 1) * this.limit;
+        const page = this.page ?? 1;
+        const limit = this.limit ?? 10;
+        return (page - 1) * limit;
     }
 }
