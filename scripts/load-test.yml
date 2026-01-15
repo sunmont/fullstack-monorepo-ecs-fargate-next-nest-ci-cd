@@ -1,0 +1,53 @@
+#artillery run scripts/load-test.yml --output report.json
+config:
+  target: "https://api.example.com"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+      name: Warm up
+    - duration: 300
+      arrivalRate: 50
+      name: Stress test
+    - duration: 60
+      arrivalRate: 5
+      name: Cool down
+  defaults:
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer ${token}"
+
+scenarios:
+  - name: "API Health Check"
+    flow:
+      - get:
+          url: "/api/health"
+
+  - name: "User Authentication Flow"
+    flow:
+      - post:
+          url: "/api/auth/login"
+          json:
+            email: "test@example.com"
+            password: "Password123!"
+          capture:
+            json: "$.access_token"
+            as: "token"
+      - think: 2
+      - get:
+          url: "/api/auth/me"
+          headers:
+            Authorization: "Bearer {{ token }}"
+      - think: 1
+      - get:
+          url: "/api/posts"
+
+  - name: "Post Creation Flow"
+    flow:
+      - post:
+          url: "/api/posts"
+          headers:
+            Authorization: "Bearer {{ token }}"
+          json:
+            title: "Load Test Post"
+            content: "This is a post created during load testing"
+            tags: ["load-test", "performance"]
