@@ -32,6 +32,9 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @ApiBearerAuth()
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserRole.ADMIN)
   @ApiOperation({ summary: "Create a new user" })
   @ApiResponse({ status: 201, description: "User created successfully" })
   @ApiResponse({ status: 409, description: "User already exists" })
