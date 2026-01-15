@@ -7,6 +7,14 @@
     "dev": "turbo run dev --parallel",
     "build": "turbo run build",
     "test": "turbo run test",
+    "test:frontend": "turbo run test --filter=frontend",
+    "test:backend": "turbo run test --filter=backend",
+    "test:watch": "turbo run test --watch",
+    "test:cov": "turbo run test:cov",
+    "test:e2e": "turbo run test:e2e",
+    "test:integration": "turbo run test:integration",
+    "test:ui": "turbo run test:ui",
+    "test:ci": "turbo run test -- --reporter=jest-junit",
     "lint": "turbo run lint",
     "clean": "turbo run clean",
     "dev:frontend": "turbo run dev --filter=frontend",
@@ -21,7 +29,8 @@
     "localstack:init": "cd infra && pnpm run localstack:init",
     "cdk:deploy": "cd infra && cdk deploy --all",
     "cdk:destroy": "cd infra && cdk destroy --all",
-    "cdk:synth": "cd infra && cdk synth"
+    "cdk:synth": "cd infra && cdk synth",
+    "prepare": "husky"
   },
   "workspaces": [
     "apps/*",
@@ -35,6 +44,9 @@
   "devDependencies": {
     "@types/node": "^25.0.3",
     "eslint": "^9.39.2",
+    "husky": "^9.1.7",
+    "jest-junit": "^16.0.0",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
     "turbo": "^2.7.2",
     "typescript": "^5.9.3"
